@@ -1,55 +1,49 @@
-// Survey content. Edit freely — question/option text, emoji, and the
-// `value` category on each option are all that matter for scoring.
-// `value` is what gets sent to the backend and used to pick a result.
+// Survey content. Mirrors backend/apps/survey/management/commands/seed_survey.py —
+// keep the two in sync if you edit questions/options here.
 export const questions = [
   {
     id: 'q1',
-    text: 'How do you prefer to start your day?',
+    text: "It's a Friday night and you're picking a movie. What draws you in first?",
     options: [
-      { id: 'q1a', label: 'Plan a to-do list', icon: '📝', value: 'planner' },
-      { id: 'q1b', label: 'Dive into the most urgent task', icon: '⚡', value: 'doer' },
-      { id: 'q1c', label: 'Catch up with the team', icon: '💬', value: 'connector' },
-      { id: 'q1d', label: 'Reflect and set an intention', icon: '🌿', value: 'thinker' },
+      { id: 'q1a', label: 'A trailer full of tension and unanswered questions', icon: '🔪', value: 'thriller' },
+      { id: 'q1b', label: 'A trailer that makes you laugh or tugs at your heartstrings', icon: '☕', value: 'comedy' },
+      { id: 'q1c', label: 'A trailer packed with explosions, spaceships, or epic quests', icon: '🚀', value: 'action' },
     ],
   },
   {
     id: 'q2',
-    text: 'When you face a tough problem, you usually...',
+    text: 'Which opening scene would hook you instantly?',
     options: [
-      { id: 'q2a', label: 'Break it into smaller steps', icon: '🧩', value: 'planner' },
-      { id: 'q2b', label: 'Try the fastest fix and iterate', icon: '🚀', value: 'doer' },
-      { id: 'q2c', label: 'Ask others for input', icon: '🤝', value: 'connector' },
-      { id: 'q2d', label: 'Step back and analyze deeply', icon: '🔍', value: 'thinker' },
+      { id: 'q2a', label: 'A character wakes up with no memory of the night before', icon: '🔪', value: 'thriller' },
+      { id: 'q2b', label: 'Two strangers share an awkward, charming meet-cute', icon: '☕', value: 'comedy' },
+      { id: 'q2c', label: 'A ship crash-lands on an unknown planet', icon: '🚀', value: 'action' },
     ],
   },
   {
     id: 'q3',
-    text: 'Your ideal work environment is...',
+    text: "What's your ideal movie-watching mood?",
     options: [
-      { id: 'q3a', label: 'Organized and predictable', icon: '📋', value: 'planner' },
-      { id: 'q3b', label: 'Fast-paced and dynamic', icon: '🔥', value: 'doer' },
-      { id: 'q3c', label: 'Collaborative and social', icon: '🌐', value: 'connector' },
-      { id: 'q3d', label: 'Quiet and focused', icon: '🎯', value: 'thinker' },
+      { id: 'q3a', label: 'On the edge of your seat, piecing clues together', icon: '🔪', value: 'thriller' },
+      { id: 'q3b', label: 'Cozy, warm, ready to smile or cry', icon: '☕', value: 'comedy' },
+      { id: 'q3c', label: 'Pumped up and ready for a thrill ride', icon: '🚀', value: 'action' },
     ],
   },
   {
     id: 'q4',
-    text: 'Others would probably describe you as...',
+    text: "Pick a setting you'd want a film to take place in.",
     options: [
-      { id: 'q4a', label: 'Reliable and structured', icon: '🏛️', value: 'planner' },
-      { id: 'q4b', label: 'Energetic and decisive', icon: '💥', value: 'doer' },
-      { id: 'q4c', label: 'Friendly and supportive', icon: '💜', value: 'connector' },
-      { id: 'q4d', label: 'Insightful and curious', icon: '💡', value: 'thinker' },
+      { id: 'q4a', label: 'A fog-covered small town hiding a dark secret', icon: '🔪', value: 'thriller' },
+      { id: 'q4b', label: 'A charming café or tight-knit neighborhood', icon: '☕', value: 'comedy' },
+      { id: 'q4c', label: 'A distant galaxy or post-apocalyptic wasteland', icon: '🚀', value: 'action' },
     ],
   },
   {
     id: 'q5',
-    text: 'What motivates you the most?',
+    text: 'What keeps you thinking about a movie after the credits roll?',
     options: [
-      { id: 'q5a', label: 'Achieving clear goals', icon: '🏆', value: 'planner' },
-      { id: 'q5b', label: 'Seeing quick results', icon: '📈', value: 'doer' },
-      { id: 'q5c', label: 'Helping others succeed', icon: '🌟', value: 'connector' },
-      { id: 'q5d', label: 'Understanding how things work', icon: '🧠', value: 'thinker' },
+      { id: 'q5a', label: "Piecing together the twist you didn't see coming", icon: '🔪', value: 'thriller' },
+      { id: 'q5b', label: 'The warm feeling or the characters you fell for', icon: '☕', value: 'comedy' },
+      { id: 'q5c', label: 'The scale of the world and the adventure you witnessed', icon: '🚀', value: 'action' },
     ],
   },
 ]

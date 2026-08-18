@@ -72,8 +72,8 @@ export default function App() {
 
       <main className="app__content">
         <header className="app__header">
-          <h1 className="app__title">Quick Survey</h1>
-          <p className="app__subtitle">Answer 5 questions and get your result</p>
+          <h1 className="app__title">🎬 What's Your Movie Vibe?</h1>
+          <p className="app__subtitle">Answer 5 questions and discover your on-screen personality</p>
         </header>
 
         {status !== STATUS.DONE && (

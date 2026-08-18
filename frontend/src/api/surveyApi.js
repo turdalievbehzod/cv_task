@@ -9,46 +9,59 @@
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000'
 
 // Local fallback results, keyed by the option `value` that was picked most.
-// Replace/extend this to match whatever the DRF backend will return.
+// Mirrors backend/apps/survey/management/commands/seed_survey.py — keep in sync.
 const MOCK_RESULTS = {
-  planner: {
-    title: 'The Planner',
-    emoji: '📋',
+  thriller: {
+    title: 'The Shadow Seeker',
+    emoji: '🔪',
     description:
-      'You thrive on structure and clear goals. You bring order to chaos and make sure nothing falls through the cracks.',
+      "You're drawn to intellectual tension and the discomfort of not knowing — your enjoyment comes from active engagement, not passive viewing. You likely relish ambiguity, moral grey areas, and the dopamine hit of a well-earned twist. Dread, for you, isn't a bug; it's the whole appeal.",
+    recommendations: ['Se7en', 'Gone Girl', 'Knives Out', 'Hereditary', 'Prisoners'],
   },
-  doer: {
-    title: 'The Doer',
-    emoji: '⚡',
+  comedy: {
+    title: 'The Warmth Chaser',
+    emoji: '☕',
     description:
-      'You move fast and get things done. Momentum is your superpower, and you learn best by taking action.',
+      "You watch movies to feel something honest — connection, humor, comfort. Spectacle matters less to you than character; you're likely more invested in who people are than what happens to them. Film is emotional company, not just entertainment.",
+    recommendations: ['La La Land', 'Crazy Rich Asians', 'The Grand Budapest Hotel', 'Little Women', 'When Harry Met Sally'],
   },
-  connector: {
-    title: 'The Connector',
-    emoji: '🤝',
+  action: {
+    title: 'The Horizon Chaser',
+    emoji: '🚀',
     description:
-      'You bring people together and thrive on collaboration. Your energy comes from helping the team succeed.',
+      "You watch to escape scale — bigger worlds, higher stakes, faster momentum. You're energized by spectacle and drawn to stories that stretch beyond the everyday. For you, cinema is a ride, not a conversation.",
+    recommendations: ['Mad Max: Fury Road', 'Dune', 'Interstellar', 'The Avengers', 'Jurassic Park'],
   },
-  thinker: {
-    title: 'The Thinker',
-    emoji: '💡',
+  balanced: {
+    title: 'The Genre Fusion',
+    emoji: '🎭',
     description:
-      'You dig deep before acting, valuing understanding over speed. Your insight often reveals what others miss.',
+      'No single driver dominates your taste — you shift moods and expect film to shift with you. You likely value strong storytelling and craft over genre convention itself, gravitating toward films that blend tones rather than commit to one.',
+    recommendations: ['Everything Everywhere All at Once', 'Inception', 'Parasite', 'Guardians of the Galaxy', 'Knives Out'],
   },
 }
 
 function computeMockResult(answers) {
   const tally = {}
   for (const answer of answers) {
+    if (!answer.value) continue
     tally[answer.value] = (tally[answer.value] || 0) + 1
   }
-  const topValue = Object.keys(tally).sort((a, b) => tally[b] - tally[a])[0]
-  return MOCK_RESULTS[topValue] || MOCK_RESULTS.thinker
+
+  const counts = Object.entries(tally)
+  if (counts.length === 0) return MOCK_RESULTS.balanced
+
+  const maxCount = Math.max(...counts.map(([, count]) => count))
+  const topValues = counts.filter(([, count]) => count === maxCount).map(([value]) => value)
+
+  // Two or more categories tied for first place -> the balanced profile.
+  const topValue = topValues.length === 1 ? topValues[0] : 'balanced'
+  return MOCK_RESULTS[topValue] || MOCK_RESULTS.balanced
 }
 
 /**
  * @param {{questionId: string, optionId: string, value: string}[]} answers
- * @returns {Promise<{title: string, emoji: string, description: string}>}
+ * @returns {Promise<{title: string, emoji: string, description: string, recommendations: string[]}>}
  */
 export async function submitSurvey(answers) {
   // --- MOCK implementation (remove once the backend is live) -----------
@@ -56,7 +69,7 @@ export async function submitSurvey(answers) {
   return computeMockResult(answers)
 
   // --- Real DRF implementation (uncomment when backend is ready) -------
-  // const response = await fetch(`${API_BASE_URL}/api/survey/submit/`, {
+  // const response = await fetch(`${API_BASE_URL}/api/v1/survey/submit/`, {
   //   method: 'POST',
   //   headers: { 'Content-Type': 'application/json' },
   //   body: JSON.stringify({
@@ -71,8 +84,11 @@ export async function submitSurvey(answers) {
   // }
   // const data = await response.json()
   // return {
-  //   title: data.result_title,
-  //   emoji: data.result_emoji,
-  //   description: data.result_description,
+  //   title: data.title,
+  //   emoji: data.emoji,
+  //   description: data.description,
+  //   recommendations: data.recommendations
+  //     ? data.recommendations.split(',').map((title) => title.trim())
+  //     : [],
   // }
 }

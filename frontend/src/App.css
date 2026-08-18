@@ -334,10 +334,49 @@
 }
 
 .result-card__description {
-  margin: 0 0 24px;
+  margin: 0 0 20px;
   font-size: 15px;
   line-height: 1.6;
   color: var(--text-muted);
+}
+
+.result-card__recommendations {
+  background: var(--purple-light);
+  border-radius: 16px;
+  padding: 16px 18px;
+  margin-bottom: 24px;
+  text-align: left;
+}
+
+.result-card__recommendations-title {
+  margin: 0 0 10px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--purple-dark);
+}
+
+.result-card__movie-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.result-card__movie-list li {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--purple-dark);
+  padding-left: 18px;
+  position: relative;
+}
+
+.result-card__movie-list li::before {
+  content: '🎞️';
+  position: absolute;
+  left: 0;
+  font-size: 12px;
 }
 
 .restart-btn {
