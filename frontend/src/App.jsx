@@ -1,6 +1,5 @@
-import { useState } from 'react'
-import { questions } from './data/questions.js'
-import { submitSurvey } from './api/surveyApi.js'
+import { useEffect, useState } from 'react'
+import { fetchQuestions, submitSurvey } from './api/surveyApi.js'
 import Decorations from './components/Decorations.jsx'
 import ProgressBar from './components/ProgressBar.jsx'
 import QuestionCard from './components/QuestionCard.jsx'
@@ -15,13 +14,33 @@ const STATUS = {
 }
 
 export default function App() {
+  const [questions, setQuestions] = useState([])
+  const [questionsLoading, setQuestionsLoading] = useState(true)
+  const [questionsError, setQuestionsError] = useState(null)
+
   const [currentIndex, setCurrentIndex] = useState(0)
   const [answers, setAnswers] = useState({}) // questionId -> { questionId, optionId, value }
   const [status, setStatus] = useState(STATUS.IN_PROGRESS)
   const [result, setResult] = useState(null)
 
+  useEffect(() => {
+    loadQuestions()
+  }, [])
+
+  function loadQuestions() {
+    setQuestionsLoading(true)
+    setQuestionsError(null)
+    fetchQuestions()
+      .then(setQuestions)
+      .catch((err) => {
+        console.error(err)
+        setQuestionsError('Could not load the survey. Please try again.')
+      })
+      .finally(() => setQuestionsLoading(false))
+  }
+
   const currentQuestion = questions[currentIndex]
-  const selectedOption = answers[currentQuestion?.id]
+  const selectedOption = currentQuestion && answers[currentQuestion.id]
   const isLastQuestion = currentIndex === questions.length - 1
 
   function handleSelect(option) {
@@ -76,7 +95,24 @@ export default function App() {
           <p className="app__subtitle">Answer 5 questions and discover your on-screen personality</p>
         </header>
 
-        {status !== STATUS.DONE && (
+        {questionsLoading && (
+          <div className="question-card">
+            <p className="question-card__text">Loading survey…</p>
+          </div>
+        )}
+
+        {!questionsLoading && questionsError && (
+          <div className="question-card">
+            <p className="error-text">{questionsError}</p>
+            <div className="nav-buttons">
+              <button type="button" className="nav-btn nav-btn--primary" onClick={loadQuestions}>
+                Retry
+              </button>
+            </div>
+          </div>
+        )}
+
+        {!questionsLoading && !questionsError && status !== STATUS.DONE && currentQuestion && (
           <>
             <ProgressBar current={currentIndex} total={questions.length} />
 

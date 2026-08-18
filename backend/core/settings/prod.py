@@ -16,6 +16,21 @@ CORS_ALLOWED_ORIGINS = [
     o.strip() for o in os.environ.get('CORS_ALLOWED_ORIGINS', '').split(',') if o.strip()
 ]
 
+# Nginx terminates TLS and proxies plain HTTP to Gunicorn; this tells Django
+# to trust the X-Forwarded-Proto header instead of misreading every request
+# as insecure (which would otherwise cause an SSL-redirect loop).
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+CSRF_TRUSTED_ORIGINS = [f'https://{host}' for host in ALLOWED_HOSTS]
+
+# Serve collected static files (admin CSS/JS) straight from Gunicorn via
+# WhiteNoise, so Nginx doesn't need a shared volume for /static/.
+STORAGES = {
+    'staticfiles': {
+        'BACKEND': 'whitenoise.storage.CompressedManifestStaticFilesStorage',
+    },
+}
+
 SECURE_SSL_REDIRECT = True
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True

@@ -1,0 +1,22 @@
+services:
+  backend:
+    build: ./backend
+    container_name: survey_backend
+    restart: unless-stopped
+    env_file:
+      - .env
+    # Bound to localhost only — the host's existing Nginx reverse-proxies
+    # api.yourdomain.com to this port. Never expose it directly on 0.0.0.0.
+    ports:
+      - "127.0.0.1:8010:8000"
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        VITE_API_BASE_URL: ${VITE_API_BASE_URL}
+    container_name: survey_frontend
+    restart: unless-stopped
+    # Same idea: only reachable via the host Nginx at app.yourdomain.com.
+    ports:
+      - "127.0.0.1:8011:80"
